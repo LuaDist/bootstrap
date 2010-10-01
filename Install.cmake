@@ -6,7 +6,7 @@ EXECUTE_PROCESS(
   COMMAND "${DIST_ROOT}/lua-bootstrap"
           "${SOURCE}/${DIST_SRC}/luadist"
           "${INSTALL_DIR}"
-          "install" "luadist-tools"
+          "install" "luadist"
 		  "-verbose=true"
           "-repo=file://${SOURCE}/dists"
 )

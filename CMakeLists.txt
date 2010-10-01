@@ -9,9 +9,9 @@ PROJECT ( luadistall C )
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET (DIST_VERSION 1.0.0)
 
-SET (LUA_SRC_DIR dists/Lua/Interpreters/lua/src)
-SET (LFS_SRC_DIR dists/Lua/Modules/luafilesystem/src)
-SET (DIST_SRC_DIR dists/Lua/Utilities/luadist)
+SET (LUA_SRC_DIR dists/lua/src)
+SET (LFS_SRC_DIR dists/luafilesystem/src)
+SET (DIST_SRC_DIR dists/luadist)
 
 # Architecture and type.
 # LuaDist uses arch-type designation for binary modules. Arch can be generic:

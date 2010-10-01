@@ -23,13 +23,3 @@ Structure of this repository
 The root contains CMake build scripts used to bootstrap initial installationof LuaDist deployment utility. Building requires CMake 2.8 and is initiated by running the appropriate build script. Result is stored in _install directory that the process will create.
 
 The _dists_ directory contains prototypes of all our maintained modules ordered into subdirectories. Sources of the modules are usually not stored in the repository and need to be downloaded and extracted. For this purpose there is a simple _luadist-assemble_ tool available that will automatically download and patch the sources. Zipping the resulting directory produces a _dist_ package suitable for redistribution using the _luadist_ tool.
-
-Dists of interest
----
-- _dists/Lua/Utilities/luadist_ Source of the deployment tool
-- _dists/Lua/Utilities/luadist\_tools_ Utilities for LuaDist development
-
-NOTE
----
-Only dists needed to bootstrap luadist are available with sources.
-That includes: lua, luafilesystem, unzip, luasocket, luadist, md5
