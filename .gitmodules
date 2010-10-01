@@ -1,0 +1,18 @@
+[submodule "dists/lua"]
+	path = dists/lua
+	url = git://github.com/LuaDist/lua.git
+[submodule "dists/luafilesystem"]
+	path = dists/luafilesystem
+	url = git://github.com/LuaDist/luafilesystem.git
+[submodule "dists/luasocket"]
+	path = dists/luasocket
+	url = git://github.com/LuaDist/luasocket.git
+[submodule "dists/md5"]
+	path = dists/md5
+	url = git://github.com/LuaDist/md5.git
+[submodule "dists/unzip"]
+	path = dists/unzip
+	url = git://github.com/LuaDist/unzip.git
+[submodule "dists/luadist"]
+	path = dists/luadist
+	url = git://github.com/drahosp/luadist.git
