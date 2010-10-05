@@ -7,9 +7,8 @@ if [ $RELEASE = "" ]; then
 RELEASE="luadist"
 fi
 echo "Bootstraping LuaDist (_bootstrap/$RELEASE)"
-echo "NOTE: Add -DCMAKE_BUILD_TYPE=Release when building release version."
 
 mkdir -p "_bootstrap/$RELEASE"
 cd "_bootstrap/$RELEASE"
-cmake ../.. -G "Unix Makefiles" $*
-cmake --build . --target install -- -j6
+cmake ../.. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release $*
+make -j install 

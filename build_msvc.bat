@@ -7,11 +7,10 @@ set PATH=C:\CMake\bin\;C:\MinGW\bin\;%PATH%
 
 set RELEASE=msvc
 echo Bootstraping LuaDist (_bootstrap/%RELEASE%)
-echo NOTE: Add -DCMAKE_BUILD_TYPE=Release when building release version.
 
 mkdir "_bootstrap\%RELEASE%"
 cd "_bootstrap\%RELEASE%"
-cmake ..\.. -G "NMake Makefiles" %*
-cmake --build . --target install
+cmake ..\.. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release %*
+nmake install
 
 endlocal

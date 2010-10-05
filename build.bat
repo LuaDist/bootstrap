@@ -7,11 +7,10 @@ set PATH=C:\CMake\bin\;C:\MinGW\bin\;%PATH%
 
 set RELEASE=mingw
 echo Bootstraping LuaDist (_bootstrap/%RELEASE%)
-echo NOTE: Add -DCMAKE_BUILD_TYPE=Release when building release version.
 
 mkdir "_bootstrap\%RELEASE%"
 cd "_bootstrap\%RELEASE%"
-cmake ..\.. -G "MinGW Makefiles" %*
-cmake --build . --target install
+cmake ..\.. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release %*
+mingw32-make install
 
 endlocal
