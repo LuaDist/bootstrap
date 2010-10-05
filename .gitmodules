@@ -13,6 +13,4 @@
 [submodule "dists/unzip"]
 	path = dists/unzip
 	url = git://github.com/LuaDist/unzip.git
-[submodule "dists/luadist"]
-	path = dists/luadist
-	url = git://github.com/drahosp/luadist.git
+
