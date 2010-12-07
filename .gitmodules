@@ -17,3 +17,9 @@
 [submodule "dists/luadist"]
 	path = dists/luadist
 	url = git://github.com/LuaDist/luadist.git
+[submodule "dists/luasec"]
+	path = dists/luasec
+	url = git://github.com/LuaDist/luasec.git
+[submodule "dists/openssl"]
+	path = dists/openssl
+	url = git://github.com/LuaDist/openssl.git
