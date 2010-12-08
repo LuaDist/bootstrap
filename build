@@ -11,4 +11,4 @@ echo "Bootstraping LuaDist (_bootstrap/$RELEASE)"
 mkdir -p "_bootstrap/$RELEASE"
 cd "_bootstrap/$RELEASE"
 cmake ../.. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release $*
-make -j install 
+cmake --build . --target install --clean-first -- -j6

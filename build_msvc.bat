@@ -11,6 +11,6 @@ echo Bootstraping LuaDist (_bootstrap/%RELEASE%)
 mkdir "_bootstrap\%RELEASE%"
 cd "_bootstrap\%RELEASE%"
 cmake ..\.. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release %*
-nmake install
+cmake --build . --target install --clean-first
 
 endlocal
