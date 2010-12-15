@@ -13,5 +13,5 @@ Build
 Run
 ---
 
-	cd _install/luadist..
-	./dist luadist
+	cd _install/luadist-*/bin
+	./lua luadist
