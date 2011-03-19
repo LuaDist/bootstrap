@@ -1,101 +1,98 @@
-# Copyright (C) 2007-2010 LuaDist.
+# Copyright (C) 2011 LuaDist
 # Redistribution and use of this file is allowed according to the terms of the MIT license.
 # For details see the COPYRIGHT file distributed with LuaDist.
 # Please note that the package source code is licensed under its own license.
 
-# This is a convinience build script to bootstrap all needed dependencies for LuaDist which 
-# then builds itself. Actual LuaDist source is in dists/Lua/Utilities/luadist.
-PROJECT ( luadistall C )
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-SET (DIST_VERSION 1.0.0)
+# This is a straightforward installer for LuaDist modules.
+project ( luadist_installer NONE )
+cmake_minimum_required ( VERSION 2.8 )
+include ( ExternalProject )
 
-SET (LUA_SRC_DIR dists/lua/src)
-SET (LFS_SRC_DIR dists/luafilesystem/src)
-SET (DIST_SRC_DIR dists/luadist)
+## SETTINGS
+# Build Release by default
+if ( NOT CMAKE_BUILD_TYPE)
+  set ( CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE )
+endif ()
 
-# Architecture and type.
-# LuaDist uses arch-type designation for binary modules. Arch can be generic:
-# Linux, Windows, Darwin, etc. Type is mostly the processor type or compiler
-# type.  By default cmake sets these to its internal variables but its
-# recommended you recheck before compiling.
-# Do architecture specific tweaks.
-SET (DETECTED_TYPE ${CMAKE_SYSTEM_PROCESSOR})
-SET (DETECTED_ARCH ${CMAKE_SYSTEM_NAME})
+# Install dists required for bootstrap by default
+if ( NOT DISTS OR DISTS STREQUAL "" )
+  set ( DISTS "lua-5.1.4 luafilesystem luasocket md5 unzip openssl luasec luadist" CACHE STRING "List of dists to install (in order)." FORCE )
+endif ()
+string ( REPLACE " " ";" INSTALL_DISTS "${DISTS}" )
+message ( "Installing: ${INSTALL_DISTS}")
 
-IF (CYGWIN)
-	# Make sure Cygwin uses correct arch and type.
-	SET(DETECTED_TYPE x86)
-	SET(DETECTED_ARCH Cygwin)
-ELSEIF (MSVC)
-	# Change the type apropritely to avoid binary problems with MinGW.
-	SET(DETECTED_TYPE MSVC32)
-ENDIF ()
+# Where to install 
+set ( INSTALL_BIN bin CACHE PATH "Where to install binaries to." )
+set ( INSTALL_LIB lib CACHE PATH "Where to install libraries to." )
+set ( INSTALL_INC include CACHE PATH "Where to install headers to." )
+set ( INSTALL_ETC etc CACHE PATH "Where to store configuration files" )
+set ( INSTALL_LMOD ${INSTALL_LIB}/lua CACHE PATH "Directory to install Lua modules." )
+set ( INSTALL_CMOD ${INSTALL_LIB}/lua CACHE PATH "Directory to install Lua binary modules." )
+set ( INSTALL_SHARE share CACHE PATH "Directory for shared data." )
 
-SET (DIST_TYPE ${DETECTED_TYPE} CACHE STRING "Host system type. PLEASE CHECK!" FORCE)
-SET (DIST_ARCH ${DETECTED_ARCH} CACHE STRING "Host system architecture. PLEASE CHECK!" FORCE)
+# Lua settings
+set ( LUA_CDIR "!/../lib/lua/" CACHE STRING "Search path for Lua modules." )
+set ( LUA_LDIR "!/../lib/lua/" CACHE STRING "Search path for Lua modules." )
 
-# Build bootstrapping Lua interpretter.
-# This is a statically linked Lua with essential libraries built-in.
-FILE(READ ${LUA_SRC_DIR}/linit.c LUA_LINIT_STR)
-STRING(REGEX REPLACE "(static.*)(  {NULL, NULL})"
-                     "#include \"lfs.h\"\n\\1  {\"lfs\", luaopen_lfs},\n\\2"
-                     LUA_LINIT_STR "${LUA_LINIT_STR}")
-FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/linit.c "${LUA_LINIT_STR}")
-IF (MSVC)
-	ADD_DEFINITIONS( -D_CRT_SECURE_NO_DEPRECATE )
-ELSEIF ( WIN32 AND NOT CYGWIN )
-ELSE ()
-	SET ( LIBS m )
-ENDIF ()
-SET (SRC_LIBLUA
-  ${LUA_SRC_DIR}/lapi.c
-  ${LUA_SRC_DIR}/lcode.c
-  ${LUA_SRC_DIR}/ldebug.c
-  ${LUA_SRC_DIR}/ldo.c
-  ${LUA_SRC_DIR}/ldump.c
-  ${LUA_SRC_DIR}/lfunc.c
-  ${LUA_SRC_DIR}/lgc.c
-  ${LUA_SRC_DIR}/llex.c
-  ${LUA_SRC_DIR}/lmem.c
-  ${LUA_SRC_DIR}/lobject.c
-  ${LUA_SRC_DIR}/lopcodes.c
-  ${LUA_SRC_DIR}/lparser.c
-  ${LUA_SRC_DIR}/lstate.c
-  ${LUA_SRC_DIR}/lstring.c
-  ${LUA_SRC_DIR}/ltable.c
-  ${LUA_SRC_DIR}/ltm.c
-  ${LUA_SRC_DIR}/lundump.c
-  ${LUA_SRC_DIR}/lvm.c
-  ${LUA_SRC_DIR}/lzio.c
-  ${LUA_SRC_DIR}/lauxlib.c
-  ${LUA_SRC_DIR}/lbaselib.c
-  ${LUA_SRC_DIR}/ldblib.c
-  ${LUA_SRC_DIR}/liolib.c
-  ${LUA_SRC_DIR}/lmathlib.c
-  ${LUA_SRC_DIR}/loslib.c
-  ${LUA_SRC_DIR}/ltablib.c
-  ${LUA_SRC_DIR}/lstrlib.c
-  ${LUA_SRC_DIR}/loadlib.c
-  ${CMAKE_CURRENT_BINARY_DIR}/linit.c   # note: patched version
-)
-SET (SRC_LUA ${LUA_SRC_DIR}/lua.c)
-SET (SRC_LFS ${LFS_SRC_DIR}/lfs.c)
-INCLUDE_DIRECTORIES ( ${LUA_SRC_DIR} )
-INCLUDE_DIRECTORIES ( ${LFS_SRC_DIR} )
-ADD_EXECUTABLE ( lua-bootstrap ${SRC_LUA} ${SRC_LIBLUA} ${SRC_LFS} )
-TARGET_LINK_LIBRARIES ( lua-bootstrap ${LIBS})
+# Search paths
+set ( CMAKE_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/${INSTALL_INC} CACHE PATH "Path to search for headers." FORCE )
+set ( CMAKE_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB} CACHE PATH "Path to search for libraries." FORCE )
 
-# Install
-SET (DIST_BOOTSTRAP true)
-ADD_SUBDIRECTORY (${DIST_SRC_DIR})
+## External projects needed for Bootstrap
+macro ( install_dist _DIST )
+  string ( REGEX MATCH "[^-]*" _DIST_NAME ${_DIST} )
+  string ( REGEX MATCH "-.*" _DIST_VER ${_DIST} )
+  string ( REPLACE "-" "" _DIST_VER "${_DIST_VER}" )
+  if ( _DIST_VER STREQUAL "" )
+    set ( _DIST_VER master )
+  endif ()
+  
+  if ( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/dists/${_DIST_NAME}/dist.info )
+    set ( _DIST_SOURCE SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dists/${_DIST_NAME} )
+  else ()
+    set ( _DIST_SOURCE GIT_REPOSITORY http://github.com/LuaDist/${_DIST_NAME}.git GIT_TAG ${_DIST_VER} )
+  endif ()
+  
+  ExternalProject_Add( ${_DIST_NAME} 
+      PREFIX ${_DIST_NAME}-${_DIST_VER}
+      ${_DIST_SOURCE}
+      BINARY_DIR ${_DIST_NAME}-${_DIST_VER}
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      CMAKE_ARGS
+        # Basic
+        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INCLUDE_PATH:PATH=${CMAKE_INCLUDE_PATH}
+        -DCMAKE_LIBRARY_PATH:PATH=${CMAKE_LIBRARY_PATH}
+        # Lua config
+        -DLUA_CDIR:STRING=${LUA_CDIR}
+        -DLUA_LDIR:STRING=${LUA_LDIR}
+        # RPath functionality
+        -DCMAKE_SKIP_BUILD_RPATH:BOOLEAN=FALSE
+        -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOLEAN=FALSE
+        -DCMAKE_INSTALL_RPATH:STRING=$ORIGIN/../lib
+        -DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOLEAN=TRUE
+        -DCMAKE_INSTALL_NAME_DIR:STRING=@executable_path/../lib
+        # Install Paths
+        -DINSTALL_BIN:STRING=${INSTALL_BIN}
+        -DINSTALL_LIB:STRING=${INSTALL_LIB}
+        -DINSTALL_INC:STRING=${INSTALL_INC}
+        -DINSTALL_ETC:STRING=${INSTALL_ETC}
+        -DINSTALL_LMOD:STRING=${INSTALL_LMOD}
+        -DINSTALL_CMOD:STRING=${INSTALL_CMOD}
+        -DINSTALL_SHARE:STRING=${INSTALL_SHARE}
+      DEPENDS ${_PREV}
+    )
+    set ( _PREV ${_DIST_NAME})
+    list ( APPEND DEPS ${_DIST_NAME} )
+endmacro ()
 
-ADD_CUSTOM_TARGET(
-	install
-	COMMAND	"${CMAKE_COMMAND}"
-			"-D" "DIST_ROOT=${CMAKE_BINARY_DIR}"
-			"-D" "DIST_SRC=${DIST_SRC_DIR}"
-			"-D" "SOURCE=${CMAKE_SOURCE_DIR}"
-			"-D" "INSTALL_DIR=${CMAKE_SOURCE_DIR}/_install/luadist-${DIST_VERSION}-${DIST_ARCH}-${DIST_TYPE}"
-			"-P" "${CMAKE_SOURCE_DIR}/Install.cmake"
-	DEPENDS lua-bootstrap
+# Build all dists
+foreach ( DIST ${INSTALL_DISTS} )
+  install_dist ( ${DIST} )
+endforeach ()
+
+add_custom_target ( install
+  COMMAND echo "Done."
+  DEPENDS ${DEPS}
 )
