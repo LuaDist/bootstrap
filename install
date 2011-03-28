@@ -1,6 +1,0 @@
-#!/bin/sh
-# Install all dists in arguments
-set -e
-mkdir -p tmp/install && cd tmp/install
-cmake ../.. -DCMAKE_INSTALL_PREFIX=../.. -DDISTS="$*"
-cmake --build . --target install

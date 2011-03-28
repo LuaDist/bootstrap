@@ -1,25 +1,24 @@
-[submodule "dists/lua"]
-	path = dists/lua
+[submodule "lua"]
+	path = lua
 	url = git://github.com/LuaDist/lua.git
-[submodule "dists/luafilesystem"]
-	path = dists/luafilesystem
+[submodule "luafilesystem"]
+	path = luafilesystem
 	url = git://github.com/LuaDist/luafilesystem.git
-[submodule "dists/luasocket"]
-	path = dists/luasocket
+[submodule "luasocket"]
+	path = luasocket
 	url = git://github.com/LuaDist/luasocket.git
-[submodule "dists/md5"]
-	path = dists/md5
+[submodule "md5"]
+	path = md5
 	url = git://github.com/LuaDist/md5.git
-[submodule "dists/unzip"]
-	path = dists/unzip
+[submodule "unzip"]
+	path = unzip
 	url = git://github.com/LuaDist/unzip.git
-
-[submodule "dists/luadist"]
-	path = dists/luadist
+[submodule "luadist"]
+	path = luadist
 	url = git://github.com/LuaDist/luadist.git
-[submodule "dists/luasec"]
-	path = dists/luasec
+[submodule "luasec"]
+	path = luasec
 	url = git://github.com/LuaDist/luasec.git
-[submodule "dists/openssl"]
-	path = dists/openssl
+[submodule "openssl"]
+	path = openssl
 	url = git://github.com/LuaDist/openssl.git
