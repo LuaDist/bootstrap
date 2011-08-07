@@ -8,8 +8,7 @@
 REPO=`dirname "$(cd ${0%/*} && echo $PWD/${0##*/})"`
 DEPL=$PWD/_install
 
-echo "WARNING: This will build LuaDist two times!"
+echo "NOTE: This will build some LuaDist components TWO times!"
 
-cd "$REPO" && git submodule update --init
 mkdir -p "$DEPL/tmp/install" && cd "$DEPL/tmp/install" && cmake "$REPO" -DCMAKE_INSTALL_PREFIX="$DEPL"
 cmake --build "$DEPL/tmp/install" --target install

@@ -10,9 +10,8 @@ set REPO=%~dp0
 set REPO=%REPO:~0,-1%
 set DEPL=%CD%\_install
 
-echo WARNING: This will build LuaDist two times!
+echo NOTE: This will build some LuaDist components TWO times!
 
-cd "%REPO%" && CALL git submodule update --init
 mkdir "%DEPL%\tmp\install"
 cd "%DEPL%\tmp\install" && cmake "%REPO%" -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="%DEPL%"
 cmake --build "%DEPL%\tmp\install" --target install
