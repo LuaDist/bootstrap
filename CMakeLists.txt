@@ -5,6 +5,7 @@
 
 # This is a straightforward bootstrap for LuaDist.
 # C type is need for correct library suffix and prefix definitions
+set ( CMAKE_LEGACY_CYGWIN_WIN32 0)
 project ( luadist_installer C )
 cmake_minimum_required ( VERSION 2.8 )
 include ( ExternalProject )
@@ -23,9 +24,9 @@ set ( DISTS lua luafilesystem luasocket luadist )
 
 # Override Lua library to avoid issues with FindLua51 module
 set ( LUA_LIBRARY "${BOOT_PREFIX}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}lua${CMAKE_SHARED_LIBRARY_SUFFIX}" )
-if ( WIN32 )
+if ( WIN32 OR CYGWIN )
 	# On Windows we use the inport library with .a suffix added
-	set ( LUA_LIBRARY "${LUA_LIBRARY}.a" )
+	set ( LUA_LIBRARY "${BOOT_PREFIX}/lib/${CMAKE_IMPORT_LIBRARY_PREFIX}lua${CMAKE_IMPORT_LIBRARY_SUFFIX}" )
 	message ( ">> ${LUA_LIBRARY}")
 endif ()
 
