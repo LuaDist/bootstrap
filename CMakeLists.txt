@@ -4,7 +4,8 @@
 # Please note that the package source code is licensed under its own license.
 
 # This is a straightforward bootstrap for LuaDist.
-project ( luadist_installer NONE )
+# C type is need for correct library suffix and prefix definitions
+project ( luadist_installer C )
 cmake_minimum_required ( VERSION 2.8 )
 include ( ExternalProject )
 
@@ -19,6 +20,14 @@ set ( BOOT_PREFIX ${CMAKE_INSTALL_PREFIX}/tmp/bootstrap )
 
 # Install dists required for bootstrap by default
 set ( DISTS lua luafilesystem luasocket luadist )
+
+# Override Lua library to avoid issues with FindLua51 module
+set ( LUA_LIBRARY "${BOOT_PREFIX}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}lua${CMAKE_SHARED_LIBRARY_SUFFIX}" )
+if ( WIN32 )
+	# On Windows we use the inport library with .a suffix added
+	set ( LUA_LIBRARY "${LUA_LIBRARY}.a" )
+	message ( ">> ${LUA_LIBRARY}")
+endif ()
 
 # Generate cache
 configure_file ( config.in ${CMAKE_CURRENT_BINARY_DIR}/config.cmake )

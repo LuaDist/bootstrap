@@ -37,4 +37,4 @@ set ( SKIP_INSTALL_FOO ON CACHE STRING "Do not install additional files." FORCE 
 # Other (eg. cross-compile settings)
 
 # Override FindLua51 detection to avoid collision with host libraries
-set ( LUA_LIBRARY "${BOOT_PREFIX}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}lua${CMAKE_SHARED_LIBRARY_SUFFIX}" CACHE STRING "Forced location of the Lua library." FORCE )
+set ( LUA_LIBRARY "${LUA_LIBRARY}" CACHE STRING "Forced location of the Lua library." FORCE )
