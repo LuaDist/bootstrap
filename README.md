@@ -1,4 +1,4 @@
-LuaDist Bootstrap
+LuaDist Bootstrap [![Build Status](https://secure.travis-ci.org/LuaDist/bootstrap.png?branch=master)](http://travis-ci.org/LuaDist/bootstrap)
 =================
 This repository contains an installation script that will bootstrap a self contained LuaDist distribution. To build LuaDist please make sure your system has git, CMake 2.8 and a compiler tool-chain available. On Ubuntu this requires cmake 2.8 and build-essential. This build will take quite a while to compile, please be patient.
 
