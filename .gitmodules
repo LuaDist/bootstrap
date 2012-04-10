@@ -4,21 +4,3 @@
 [submodule "luafilesystem"]
 	path = luafilesystem
 	url = git://github.com/LuaDist/luafilesystem.git
-[submodule "luasocket"]
-	path = luasocket
-	url = git://github.com/LuaDist/luasocket.git
-[submodule "md5"]
-	path = md5
-	url = git://github.com/LuaDist/md5.git
-[submodule "unzip"]
-	path = unzip
-	url = git://github.com/LuaDist/unzip.git
-[submodule "luadist"]
-	path = luadist
-	url = git://github.com/LuaDist/luadist.git
-[submodule "luasec"]
-	path = luasec
-	url = git://github.com/LuaDist/luasec.git
-[submodule "openssl"]
-	path = openssl
-	url = git://github.com/LuaDist/openssl.git
