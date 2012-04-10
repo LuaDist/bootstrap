@@ -20,7 +20,7 @@ endif ()
 set ( BOOT_PREFIX ${CMAKE_INSTALL_PREFIX}/tmp/bootstrap )
 
 # Install dists required for bootstrap by default
-set ( DISTS lua luafilesystem luasocket luadist )
+set ( DISTS lua luafilesystem  luadist-git )
 
 # Override Lua library to avoid issues with FindLua51 module
 set ( LUA_LIBRARY "${BOOT_PREFIX}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}lua${CMAKE_SHARED_LIBRARY_SUFFIX}" )
@@ -54,6 +54,6 @@ endforeach ()
 
 # On CMake 2.8.2 (Ubuntu) This may generate an error even if everything is fine. Ignore it, or update to 2.8.4.
 add_custom_target ( install
-  COMMAND ${BOOT_PREFIX}/bin/luadist ${CMAKE_INSTALL_PREFIX} install luadist -repo=${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND ${BOOT_PREFIX}/bin/luadist ${CMAKE_INSTALL_PREFIX} install luadist-git
   DEPENDS ${_PREV}
 )

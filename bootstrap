@@ -11,4 +11,4 @@ DEPL=$PWD/_install
 echo "NOTE: This will build some LuaDist components TWO times!"
 
 mkdir -p "$DEPL/tmp/install" && cd "$DEPL/tmp/install" && cmake "$REPO" -DCMAKE_INSTALL_PREFIX="$DEPL"
-cmake --build "$DEPL/tmp/install" --target install
+cmake --build "$DEPL/tmp/install" --target install -- -j6
