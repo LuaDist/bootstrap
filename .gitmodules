@@ -4,3 +4,6 @@
 [submodule "luafilesystem"]
 	path = luafilesystem
 	url = git://github.com/LuaDist/luafilesystem.git
+[submodule "luadist-git"]
+	path = luadist-git
+	url = git://github.com/LuaDist/luadist-git.git
