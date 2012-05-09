@@ -35,6 +35,3 @@ set ( SKIP_INSTALL_TEST ON CACHE STRING "Do not install tests." FORCE )
 set ( SKIP_INSTALL_FOO ON CACHE STRING "Do not install additional files." FORCE )
 
 # Other (eg. cross-compile settings)
-
-# Override FindLua51 detection to avoid collision with host libraries
-set ( LUA_LIBRARY "${LUA_LIBRARY}" CACHE STRING "Forced location of the Lua library." FORCE )
