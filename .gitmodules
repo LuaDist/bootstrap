@@ -7,3 +7,6 @@
 [submodule "luadist-git"]
 	path = luadist-git
 	url = git://github.com/LuaDist/luadist-git.git
+[submodule "srlua"]
+	path = srlua
+	url = git://github.com/LuaDist/srlua.git
