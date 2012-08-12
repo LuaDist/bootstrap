@@ -2,24 +2,14 @@
 # LuaDist Travis-CI Hook
 #
 
-# Since CMake is not directly supported we use erlang VMs
-language: erlang
-
-# Allow luajit to fail
-matrix:
-  allow_failures:
-    - env: LUA="luajit"
-
-# We need CMake and LuaDist
-install:
-  - sudo apt-get install cmake
-  - git submodule update --init
-
-# Use LuaDist to deploy the module
+# We assume C build environments
+language: C
+	
+# Run as is
 script:
   - ./bootstrap
 
-# Execute additional tests or commands
+# List installed modules
 after_script:
   - ./_install/bin/luadist list
 
