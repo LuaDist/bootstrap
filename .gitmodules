@@ -10,3 +10,12 @@
 [submodule "srlua"]
 	path = srlua
 	url = git://github.com/LuaDist/srlua.git
+[submodule "lua-git"]
+	path = lua-git
+	url = git://github.com/LuaDist/lua-git.git
+[submodule "zlib"]
+	path = zlib
+	url = git://github.com/LuaDist/zlib.git
+[submodule "luasocket"]
+	path = luasocket
+	url = git://github.com/LuaDist/luasocket.git

@@ -19,7 +19,7 @@ endif ()
 set ( BOOT_PREFIX ${CMAKE_INSTALL_PREFIX}/tmp/bootstrap )
 
 # Install dists required for bootstrap by default
-set ( DISTS lua srlua luafilesystem luadist-git )
+set ( DISTS lua srlua luafilesystem luasocket zlib lua-git luadist-git )
 
 # Generate cache
 configure_file ( config.in ${CMAKE_CURRENT_BINARY_DIR}/config.cmake )
