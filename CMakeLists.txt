@@ -45,6 +45,6 @@ endforeach ()
 
 # On CMake 2.8.2 (Ubuntu) This may generate an error even if everything is fine. Ignore it, or update to 2.8.4.
 add_custom_target ( install
-  COMMAND ${BOOT_PREFIX}/bin/luadist ${CMAKE_INSTALL_PREFIX} install luadist-git
+  COMMAND ${BOOT_PREFIX}/bin/luadist ${CMAKE_INSTALL_PREFIX} install luadist-git -binary=false
   DEPENDS ${_PREV}
 )
