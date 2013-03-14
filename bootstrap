@@ -13,7 +13,7 @@ INSTALL=$REPO/_install
 
 echo "## This will build some LuaDist components TWO times!"
 
-mkdir -p "$BUILD" && cd "$BUILD" && cmake "$REPO" -DCMAKE_INSTALL_PREFIX="$BOOT" $@
+mkdir -p "$BUILD" && cd "$BUILD" && cmake "$REPO" -DCMAKE_INSTALL_PREFIX="$BOOT"
 cmake --build "$BUILD" --target install -- -j6
 
 echo "## Bootstrap done, building LuaDist using LuaDist"
