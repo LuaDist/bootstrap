@@ -17,7 +17,7 @@ set INSTALL=%REPO%\_install
 echo ## This will build some LuaDist components TWO times!
 
 mkdir "%BUILD%"
-cd "%BUILD%" && cmake "%BUILD%" -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="%BOOT%" %*
+cd "%BUILD%" && cmake "%REPO%" -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="%BOOT%" %*
 cmake --build "%BUILD%" --target install
 
 echo ## Bootstrap done, building LuaDist using LuaDist
