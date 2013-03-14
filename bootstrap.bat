@@ -1,5 +1,5 @@
 :: WARNING: This script assumes CMake 2.8.4+ and GCC/MinGW compiler is installed and available in system PATH.
-:: Copyright (C) 2011 LuaDist
+:: Copyright (C) 2013 LuaDist
 :: Redistribution and use of this file is allowed according to the terms of the MIT license.
 :: For details see the COPYRIGHT file distributed with LuaDist.
 :: Please note that the package source code is licensed under its own license.
@@ -8,12 +8,22 @@
 setlocal
 set REPO=%~dp0
 set REPO=%REPO:~0,-1%
-set DEPL=%CD%\_install
 
-echo NOTE: This will build some LuaDist components TWO times!
+set BOOT=%REPO%\_bootstrap
+set BUILD=%BOOT%\tmp
+set LUADIST=%BOOT%\bin\luadist.exe
+set INSTALL=%REPO%\_install
 
-mkdir "%DEPL%\tmp\install"
-cd "%DEPL%\tmp\install" && cmake "%REPO%" -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="%DEPL%"
-cmake --build "%DEPL%\tmp\install" --target install
+echo ## This will build some LuaDist components TWO times!
+
+mkdir "%BUILD%"
+cd "%BUILD%" && cmake "%BUILD%" -G"MinGW Makefiles" -DCMAKE_INSTALL_PREFIX="%BOOT%" %*
+cmake --build "%BUILD%" --target install
+
+echo ## Bootstrap done, building LuaDist using LuaDist
+
+%LUADIST% "$INSTALL" install luadist-git -binary=false -source %*
+
+echo ## LuaDist is now built and can be found in %INSTALL%
 
 endlocal

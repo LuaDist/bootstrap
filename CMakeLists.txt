@@ -1,11 +1,10 @@
-# Copyright (C) 2011 LuaDist
+# Copyright (C) 2013 LuaDist
 # Redistribution and use of this file is allowed according to the terms of the MIT license.
 # For details see the COPYRIGHT file distributed with LuaDist.
 # Please note that the package source code is licensed under its own license.
 
 # This is a straightforward bootstrap for LuaDist.
-set ( CMAKE_LEGACY_CYGWIN_WIN32 0)
-project ( luadist_installer NONE )
+project ( luadist_bootstrap NONE )
 cmake_minimum_required ( VERSION 2.8 )
 include ( ExternalProject )
 
@@ -16,12 +15,12 @@ if ( NOT CMAKE_BUILD_TYPE)
 endif ()
 
 # Bootstrap destination
-set ( BOOT_PREFIX ${CMAKE_INSTALL_PREFIX}/tmp/bootstrap )
+set ( BOOT_PREFIX ${CMAKE_INSTALL_PREFIX} )
 
 # Install dists required for bootstrap by default
 set ( DISTS lua srlua luafilesystem luasocket zlib lua-git luadist-git )
 
-# Generate cache
+# Generate cache file with configuration from config.in
 configure_file ( config.in ${CMAKE_CURRENT_BINARY_DIR}/config.cmake )
 
 ## External projects needed for Bootstrap
@@ -29,22 +28,23 @@ macro ( install_dist _DIST )
   # Build project with all configuration
   ExternalProject_Add( ${_DIST} 
       PREFIX ${_DIST}
-      BINARY_DIR ${_DIST}/build
       INSTALL_DIR ${BOOT_PREFIX}
+      BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${_DIST}
       SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${_DIST}
       CMAKE_ARGS -C ${CMAKE_CURRENT_BINARY_DIR}/config.cmake
       DEPENDS ${_PREV}
     )
+    # Chain dependencies
     set ( _PREV ${_DIST})
 endmacro ()
 
-# Build all dists
+# Build all modules one after another
 foreach ( DIST ${DISTS} )
   install_dist ( ${DIST} )
 endforeach ()
 
-# On CMake 2.8.2 (Ubuntu) This may generate an error even if everything is fine. Ignore it, or update to 2.8.4.
+# Make a fake target
 add_custom_target ( install
-  COMMAND ${BOOT_PREFIX}/bin/luadist ${CMAKE_INSTALL_PREFIX} install luadist-git -binary=false
+  COMMAND echo "LuaDist is now bootstrapped in ${BOOT_PREFIX}."
   DEPENDS ${_PREV}
 )
