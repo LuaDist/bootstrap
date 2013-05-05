@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # WARNING: This script assumes CMake 2.8.4+ and GCC/MinGW compiler is installed and available in system PATH.
 # Copyright (C) 2013 LuaDist
 # Redistribution and use of this file is allowed according to the terms of the MIT license.
