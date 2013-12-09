@@ -4,7 +4,7 @@
 
 # We assume C build environments
 language: C
-	
+
 # Run as is
 script:
   - ./bootstrap
