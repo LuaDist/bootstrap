@@ -18,24 +18,33 @@ endif ()
 set ( BOOT_PREFIX ${CMAKE_INSTALL_PREFIX} )
 
 # Install dists required for bootstrap by default
-set ( DISTS lua srlua luafilesystem luasocket zlib lua-git luadist-git )
+set ( DISTS 
+  lua
+  srlua
+  luafilesystem
+  luasocket
+  zlib
+  lua-git
+  luadist-git
+)
 
 # Generate cache file with configuration from config.in
 configure_file ( config.in ${CMAKE_CURRENT_BINARY_DIR}/config.cmake )
 
-## External projects needed for Bootstrap
 macro ( install_dist _DIST )
-  # Build project with all configuration
-  ExternalProject_Add( ${_DIST} 
+  set ( _DIST_SOURCE GIT_REPOSITORY http://github.com/LuaDist/${_DIST}.git GIT_TAG master )
+
+  # Build project using the generated settings in cache
+  ExternalProject_Add( ${_DIST}
       PREFIX ${_DIST}
-      INSTALL_DIR ${BOOT_PREFIX}
-      BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${_DIST}
-      SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${_DIST}
+      ${_DIST_SOURCE}
+      BINARY_DIR ${_DIST}
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       CMAKE_ARGS -C ${CMAKE_CURRENT_BINARY_DIR}/config.cmake
       DEPENDS ${_PREV}
     )
-    # Chain dependencies
     set ( _PREV ${_DIST})
+    list ( APPEND DEPS ${_DIST} )
 endmacro ()
 
 # Build all modules one after another
@@ -45,6 +54,6 @@ endforeach ()
 
 # Make a fake target
 add_custom_target ( install
-  COMMAND echo "LuaDist is now bootstrapped in ${BOOT_PREFIX}."
+  COMMAND echo "Bootstrap finished: ${BOOT_PREFIX}."
   DEPENDS ${_PREV}
 )
