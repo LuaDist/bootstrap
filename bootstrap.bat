@@ -22,6 +22,10 @@ cmake --build "%BUILD%" --target install
 
 echo ## Bootstrap done, building LuaDist using LuaDist
 
+set LUA_PATH=
+set LUA_CPATH=
+set LUA_PATH_5_2=
+set LUA_CPATH_5_2=
 %LUADIST% "%INSTALL%" install luadist-git -binary=false -source %*
 
 echo ## LuaDist is now built and can be found in %INSTALL%
